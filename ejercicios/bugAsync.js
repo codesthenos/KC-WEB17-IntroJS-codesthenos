@@ -10,7 +10,7 @@ function obtenerUsuarioCallback (id, callback) {
 }
 
 const usuarioCallback = obtenerUsuarioCallback(1, (usuario) => {
-  return usuario ? console.log(usuario) : undefined
+  return usuario ? console.log(usuario) : console.log('Usuario no encontrado')
 });
 
 
@@ -25,5 +25,11 @@ function obtenerUsuarioPromise (id) {
   })
 }
 
-const usuarioPromise = obtenerUsuarioPromise(1).then(usuario => usuario ? console.log(usuario) : undefined)
+const usuarioPromise = obtenerUsuarioPromise(1).then(usuario => usuario ? console.log(usuario) : console.log('Usuario no encontrado'))
 
+const fetchUsuario = async (id) => {
+  const usuario = await obtenerUsuarioPromise(id)
+  usuario ? console.log(usuario) : console.log('Usuario no encontrado')
+}
+
+const fetchedUsuario = fetchUsuario(1)
