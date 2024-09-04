@@ -40,8 +40,7 @@ const obtenProyectos = () => {
 };
 
 const desarroladoresJavascript = obtenDesarrolladoresTecnologia('JaVaSCripT');
-console.log(desarroladoresJavascript);
+console.dir(desarroladoresJavascript, { depth: null, colors: true });
 
 const proyectos = obtenProyectos();
 console.log(proyectos);
-console.log(datos);
