@@ -91,7 +91,22 @@ const musicCatalog = () => {
    * @returns {Song[]} The list of sorted songs.
    * @throws {Error} If the playlist is not found or the criterion is invalid.
    */
-  const sortSongs = (playlistName, criterion) => {};
+  const sortSongs = (playlistName, criterion) => {
+    const compareCriterions = {
+      "duration": song => song.duration,
+      "title": song => song.title,
+      "artist": song => song.artist
+    }
+
+    const playlist = playlists.find(playlist => playlist.name === playlistName)
+
+    playlist.songs.sort((a, b) => {
+      const getCriterion = compareCriterions[criterion]
+
+      return getCriterion(a).localeCompare(getCriterion(b))
+    })
+    
+  };
 
   return { createPlaylist, addSongToPlaylist, removeSongFromPlaylist, sortSongs, getAllPlaylists, removePlaylist, favoriteSong };
 };
