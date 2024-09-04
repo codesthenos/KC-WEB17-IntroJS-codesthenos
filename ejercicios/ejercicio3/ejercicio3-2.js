@@ -18,11 +18,11 @@ console.log(unitsInput);
 // secondInput
 const secondInput = 1;
 // igual que en el ejericio anterior la funcion separateUnits me sirve para este ejemplo
-const unitsSecondInput = separateUnits(secondInput)
-console.log(unitsSecondInput)
+const unitsSecondInput = separateUnits(secondInput);
+console.log(unitsSecondInput);
 
 // thirdInput
 const thirdInput = 11234;
 // igual que en el ejericio anterior la funcion separateUnits me sirve para este ejemplo
-const unitsThirdInput = separateUnits(thirdInput)
-console.log(unitsThirdInput)
+const unitsThirdInput = separateUnits(thirdInput);
+console.log(unitsThirdInput);
