@@ -13,6 +13,7 @@ const usuarioCallback = obtenerUsuarioCallback(1, (usuario) => {
   return usuario ? console.log(usuario) : console.log('Usuario no encontrado')
 });
 
+// deberia hacer manejo de errores con try catch y reject pero paso a paso
 
 function obtenerUsuarioPromise (id) {
   return new Promise((resolve) => {
