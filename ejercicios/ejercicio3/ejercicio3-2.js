@@ -6,6 +6,8 @@ const separateUnits = (input) => {
   const stringInput = String(input);
   // creo una lista con todos los digitos del input usando el spread operator
   const listInput = [...stringInput];
+  // usando el metodo String.split()
+  const splitInput = stringInput.split('')
   // uno los elementos de la lista como en el ejercicio anterior
   const unitsInput = listInput.join('-');
 
