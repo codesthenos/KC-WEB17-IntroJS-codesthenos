@@ -29,7 +29,8 @@ const musicCatalog = () => {
    */
   const createPlaylist = (playlistName) => {
     const newPlaylist = { name: playlistName, songs: [] }
-    playlists.push(newPlaylist)
+    // playlists.push(newPlaylist) puede acabar causando errores, muta playlists
+    playlists = [...playlists, newPlaylist]
   };
 
   /**
@@ -55,10 +56,14 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist is not found.
    */
   const addSongToPlaylist = (playlistName, song) => {
-    const playlist = playlists.find(playlist => playlist.name === playlistName)
+    const playlist = playlists.find(playlist => playlist.name === playlist)
     if (!playlist) throw new Error('Playlist not found')
-    playlist.songs.push({ ...song, favorite: false })
-    //Without managing the error playlists.map(playlist => playlist.name === playlistName && playlist.songs.push(song))
+    // playlist.songs.push({ ...song, favorite: false }) muta, da lugar a errores
+    const updatedPlaylist = { name: playlist.name, songs: [...playlist.songs, { ...song, favorite: false }]}
+    playlists = playlists.map(playlist => {
+      if (playlist.name === playlistName) return updatedPlaylist
+      return playlist
+    })
   };
 
   /**
@@ -69,8 +74,14 @@ const musicCatalog = () => {
    */
   const removeSongFromPlaylist = (playlistName, title) => {
     const playlist = playlists.find(playlist => playlist.name === playlistName)
-    const song = playlist.songs.find(song => song.title === title)
-    playlist.songs.pop(song)
+    if (!playlist) throw new Error('Playlist not found')
+    const songToDelete = playlist.songs.find(song => song.title === title)
+    if (!songToDelete) throw new Error('Song not found')
+    const updatedSongs = playlist.songs.filter(song => song !== songToDelete)
+    const updatedPlaylist = { name: playlist.name, songs: updatedSongs }
+    // playlist.songs.pop(song) muta el array original evitar uso como con push
+    // con ternaria, por praticar, es igual que el playlists.map de addSongToPlaylist pero en una linea
+    playlists = playlists.map(playlist => playlist.name === playlistName ? updatedPlaylist : playlist)
   };
 
   /**
@@ -80,8 +91,15 @@ const musicCatalog = () => {
    */
   const favoriteSong = (playlistName, title) => {
     const playlist = playlists.find(playlist => playlist.name === playlistName)
-    const song = playlist.songs.find(song => song.title === title)
-    song.favorite = true
+    if (!playlist) throw new Error('Playlist not found')
+    const songToFavorite = playlist.songs.find(song => song.title === title)
+    if (!songToFavorite) throw new Error('Song not found')
+    const updatedSongs = playlist.songs.map(song => {
+      if (song === songToFavorite) return { ...song, favorite: true }
+      return song
+    })
+    const updatedPlaylist = { name: playlist.name, songs: updatedSongs }
+    playlists = playlists.map(playlist => playlist.name === playlistName ? updatedPlaylist : playlist)
   };
 
   /**
@@ -93,9 +111,9 @@ const musicCatalog = () => {
    */
   const sortSongs = (playlistName, criterion) => {
     const compareCriterions = {
-      "duration": song => song.duration,
-      "title": song => song.title,
-      "artist": song => song.artist
+      duration: song => song.duration,
+      title: song => song.title,
+      artist: song => song.artist
     }
 
     const playlist = playlists.find(playlist => playlist.name === playlistName)
