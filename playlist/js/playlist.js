@@ -110,19 +110,27 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist is not found or the criterion is invalid.
    */
   const sortSongs = (playlistName, criterion) => {
+    if (!['title', 'artist', 'duration'].includes(criterion)) throw new Error('Invalid criterion')
+    const playlist = playlists.find(playlist => playlist.name === playlistName)
+    if (!playlist) throw new Error('Playlist not found')
+
+    const sortedSongs = playlist.songs.toSorted((a, b) => a[criterion].localeCompare(b[criterion]))
+    const updatedPlaylist = { name: playlist.name, songs: sortedSongs }
+
+    playlists = playlists.map(playlist => playlist.name === playlistName ? updatedPlaylist : playlist)
+    /* Esto lo entiendo, pero aun no estoy comodo con ello
     const compareCriterions = {
       duration: song => song.duration,
       title: song => song.title,
       artist: song => song.artist
     }
-
-    const playlist = playlists.find(playlist => playlist.name === playlistName)
-
+    
     playlist.songs.sort((a, b) => {
       const getCriterion = compareCriterions[criterion]
 
       return getCriterion(a).localeCompare(getCriterion(b))
     })
+    */
     
   };
 
