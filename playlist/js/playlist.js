@@ -56,7 +56,7 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist is not found.
    */
   const addSongToPlaylist = (playlistName, song) => {
-    const playlist = playlists.find(playlist => playlist.name === playlist)
+    const playlist = playlists.find(playlist => playlist.name === playlistName)
     if (!playlist) throw new Error('Playlist not found')
     // playlist.songs.push({ ...song, favorite: false }) muta, da lugar a errores
     const updatedPlaylist = { name: playlist.name, songs: [...playlist.songs, { ...song, favorite: false }]}
