@@ -62,12 +62,12 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist is not found.
    */
   const addSongToPlaylist = (playlistName, song) => {
-    const playlist = findPlaylist(playlists, playlistName)
+    const playlistFound = findPlaylist(playlists, playlistName)
     // playlist.songs.push({ ...song, favorite: false }) muta, da lugar a errores
-    const updatedPlaylist = { name: playlist.name, songs: [...playlist.songs, { ...song, favorite: false }]}
-    playlists = playlists.map(playlistItem => {
-      if (playlistItem.name === playlistName) return updatedPlaylist
-      return playlistItem
+    const updatedPlaylist = { name: playlistFound.name, songs: [...playlistFound.songs, { ...song, favorite: false }]}
+    playlists = playlists.map(playlist => {
+      if (playlist.name === playlistName) return updatedPlaylist
+      return playlist
     })
   };
 
@@ -78,11 +78,11 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist or song is not found.
    */
   const removeSongFromPlaylist = (playlistName, title) => {
-    const playlist = findPlaylist(playlists, playlistName)
-    const songToDelete = playlist.songs.find(song => song.title === title)
+    const playlistFound = findPlaylist(playlists, playlistName)
+    const songToDelete = playlistFound.songs.find(song => song.title === title)
     if (!songToDelete) throw new Error('Song not found')
-    const updatedSongs = playlist.songs.filter(song => song !== songToDelete)
-    const updatedPlaylist = { name: playlist.name, songs: updatedSongs }
+    const updatedSongs = playlistFound.songs.filter(song => song !== songToDelete)
+    const updatedPlaylist = { name: playlistFound.name, songs: updatedSongs }
     // playlist.songs.pop(song) muta el array original evitar uso como con push
     // con ternaria, por praticar, es igual que el playlists.map de addSongToPlaylist pero en una linea
     playlists = playlists.map(playlist => playlist.name === playlistName ? updatedPlaylist : playlist)
@@ -94,15 +94,14 @@ const musicCatalog = () => {
    * @param {string} title - The title of the song to mark as a favorite.
    */
   const favoriteSong = (playlistName, title) => {
-    const playlist = playlists.find(playlist => playlist.name === playlistName)
-    if (!playlist) throw new Error('Playlist not found')
-    const songToFavorite = playlist.songs.find(song => song.title === title)
+    const playlistFound = findPlaylist(playlists, playlistName)
+    const songToFavorite = playlistFound.songs.find(song => song.title === title)
     if (!songToFavorite) throw new Error('Song not found')
-    const updatedSongs = playlist.songs.map(song => {
+    const updatedSongs = playlistFound.songs.map(song => {
       if (song === songToFavorite) return { ...song, favorite: true }
       return song
     })
-    const updatedPlaylist = { name: playlist.name, songs: updatedSongs }
+    const updatedPlaylist = { name: playlistFound.name, songs: updatedSongs }
     playlists = playlists.map(playlist => playlist.name === playlistName ? updatedPlaylist : playlist)
   };
 
@@ -115,11 +114,10 @@ const musicCatalog = () => {
    */
   const sortSongs = (playlistName, criterion) => {
     if (!['title', 'artist', 'duration'].includes(criterion)) throw new Error('Invalid criterion')
-    const playlist = playlists.find(playlist => playlist.name === playlistName)
-    if (!playlist) throw new Error('Playlist not found')
+    const playlistFound = playlists.find(playlist => playlist.name === playlistName)
 
-    const sortedSongs = playlist.songs.toSorted((a, b) => a[criterion].localeCompare(b[criterion]))
-    const updatedPlaylist = { name: playlist.name, songs: sortedSongs }
+    const sortedSongs = playlistFound.songs.toSorted((a, b) => a[criterion].localeCompare(b[criterion]))
+    const updatedPlaylist = { name: playlistFound.name, songs: sortedSongs }
 
     playlists = playlists.map(playlist => playlist.name === playlistName ? updatedPlaylist : playlist)
     /* Esto lo entiendo, pero aun no estoy comodo con ello
