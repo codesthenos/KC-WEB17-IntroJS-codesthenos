@@ -16,6 +16,12 @@
  */
 // Example: { name: 'Playlist Name', songs: [{ title: 'Song Title', artist: 'Song Artist', genre: 'Song Genre', duration: 180, favorite: false }] }
 
+const findPlaylist = (playlistList, playlistName) => {
+  const foundPlaylist = playlistList.find(playlist => playlist.name === playlistName)
+  if (!foundPlaylist) throw new Error('Playlist not found')
+  return foundPlaylist
+}
+
 const musicCatalog = () => {
   /**
    * Array of playlists in the catalog.
@@ -56,13 +62,12 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist is not found.
    */
   const addSongToPlaylist = (playlistName, song) => {
-    const playlist = playlists.find(playlist => playlist.name === playlistName)
-    if (!playlist) throw new Error('Playlist not found')
+    const playlist = findPlaylist(playlists, playlistName)
     // playlist.songs.push({ ...song, favorite: false }) muta, da lugar a errores
     const updatedPlaylist = { name: playlist.name, songs: [...playlist.songs, { ...song, favorite: false }]}
-    playlists = playlists.map(playlist => {
-      if (playlist.name === playlistName) return updatedPlaylist
-      return playlist
+    playlists = playlists.map(playlistItem => {
+      if (playlistItem.name === playlistName) return updatedPlaylist
+      return playlistItem
     })
   };
 
@@ -73,8 +78,7 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist or song is not found.
    */
   const removeSongFromPlaylist = (playlistName, title) => {
-    const playlist = playlists.find(playlist => playlist.name === playlistName)
-    if (!playlist) throw new Error('Playlist not found')
+    const playlist = findPlaylist(playlists, playlistName)
     const songToDelete = playlist.songs.find(song => song.title === title)
     if (!songToDelete) throw new Error('Song not found')
     const updatedSongs = playlist.songs.filter(song => song !== songToDelete)
@@ -138,3 +142,21 @@ const musicCatalog = () => {
 };
 
 export default musicCatalog
+
+/*
+const catalog = musicCatalog();
+catalog.createPlaylist('Rock Classics');
+catalog.createPlaylist('Pop Hits');
+//Crear una canción
+const song = { title: 'Billie Jean', artist: 'Michael Jackson', genre: 'Pop', duration: 300 };
+//Añadir la canción usando push (modificación directa)
+catalog.addSongToPlaylist('Rock Classics', song);
+//Verificar antes de añadir la misma canción a otra playlist
+const originalPlaylistWithoutPopHitSong = catalog.getAllPlaylists();
+//Añadir la misma canción a "Pop Hits"
+catalog.addSongToPlaylist('Pop Hits', song);
+// Verificar después de añadir la canción
+const playlistAfterAddingSongToPop = catalog.getAllPlaylists();
+console.log(originalPlaylistWithoutPopHitSong); // no debería tener canción en pop hits pero usando push muta el valor y si que la pone
+console.log(playlistAfterAddingSongToPop); // debería tener canción ambas playlist
+*/
