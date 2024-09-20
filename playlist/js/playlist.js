@@ -142,8 +142,9 @@ const musicCatalog = () => {
   return { createPlaylist, addSongToPlaylist, removeSongFromPlaylist, sortSongs, getAllPlaylists, removePlaylist, favoriteSong };
 };
 
-// export default musicCatalog
+export default musicCatalog
 
+/*
 const catalog = musicCatalog();
 catalog.createPlaylist('Rock Classics');
 catalog.createPlaylist('Pop Hits');
@@ -159,3 +160,4 @@ catalog.addSongToPlaylist('Pop Hits', song);
 const playlistAfterAddingSongToPop = catalog.getAllPlaylists();
 console.log(originalPlaylistWithoutPopHitSong); // no debería tener canción en pop hits pero usando push muta el valor y si que la pone
 console.log(playlistAfterAddingSongToPop); // debería tener canción ambas playlist
+*/
