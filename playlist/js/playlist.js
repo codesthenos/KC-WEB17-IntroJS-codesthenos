@@ -117,7 +117,7 @@ const musicCatalog = () => {
    */
   const sortSongs = (playlistName, criterion) => {
     if (!['title', 'artist', 'duration'].includes(criterion)) throw new Error('Invalid criterion')
-    const playlistFound = playlists.find(playlist => playlist.name === playlistName)
+    const playlistFound = findPlaylist(playlists, playlistName)
 
     const sortedSongs = playlistFound.songs.toSorted((a, b) => criterion === 'duration' ? a.duration - b.duration : a[criterion].localeCompare(b[criterion]))
     const updatedPlaylist = { name: playlistFound.name, songs: sortedSongs }
